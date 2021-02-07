@@ -1,5 +1,5 @@
 ---
-title: "Pulling your running data from Strava using Python"
+title: "Download running data from Strava using Python"
 date: 2021-01-23
 tags: post
 layout: layouts/post.njk
@@ -16,25 +16,17 @@ easily get our data out of Strava.
 
 ## Setting up the environment
 
+I'm using [`pipenv`](https://pipenv.pypa.io/en/latest/) to create a virtual
+environment and install `stravaio` with Python 3.8.
+
 ```bash
 mkdir strava-scrape
 cd strava-scrape
 touch main.py
+pipenv install stravaio
 ```
 
-I'm using [`pipenv`](https://pipenv.pypa.io/en/latest/) to create a virtual
-environment for me and install `stravaio`. Alternatively you can use `pip` in
-your Python environment of choice. The Python version used throughout this
-article is `3.8`.
-
-```bash
-pipenv install stravaio  # alternative: pip install stravaio
-```
-
-To run Python in your virtual environmeent you can ```pipenv run python``` or
-activate the environment in your current terminal using ```pipenv shell```,
-which will automatically run every command within the environment (similar to
-`conda` environments).
+To run Python in your virtual environmeent you can ```pipenv run python```.
 
 ## Accessing the Strava API
 
@@ -90,7 +82,7 @@ browser to allow `stravaio` to access our Strava data.
 So we are ready to roll and can start making API requests to Strava. Let's first
 get all activities of the logged-in athlete (us).
 
-```python/3/
+```python
 def main():
     access_token = strava_oauth2().get("access_token")  # get access token
     api_client = StravaIO(access_token=access_token)  # API client
@@ -104,7 +96,7 @@ recorded (e.g. bike rides, hikes). So let's filter the list of activities for
 runs and collect their ID's in a list of activities we actually want to
 download.
 
-```python/5-7/
+```python
 def main():
     access_token = strava_oauth2().get("access_token")  # get access token
     api_client = StravaIO(access_token=access_token)  # API client
@@ -121,7 +113,7 @@ simple in `typer`, as we simple add an argument to the `main` function. We then
 turn the `filepath: str` into a `Path` object for convenience and use `os` to 
 make sure the filepath actually exist - and create it if not.
 
-```python/0-1,5-8/
+```python
 from pathlib import Path
 import os
 
@@ -146,7 +138,7 @@ API: We loop over all activity sumaries of our runs and use their id to
 `get_activity_by_id`. We transform the returning object into a `dict` and use
 the `json` module to dump it to file.
 
-```python/15-18/
+```python
 # ...
 def main(filepath: str):
     filepath = Path(filepath)
@@ -175,8 +167,3 @@ like more of a hassle. So let's just save the activities named after their
 starting timestamp - that way we can easily access our activities my time. This
 also enables us to easily check the date of our most recent local activity
 and only query Strava for newer activities.
-
-## Refining the prototype
-
-...
-

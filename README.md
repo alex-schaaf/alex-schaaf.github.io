@@ -15,3 +15,4 @@ To deploy, simply push to github master branch and a GitHub workflow will take c
 * https://statickit.com/guides/eleventy-webpack
 * https://statickit.com/guides/eleventy-tailwind
 * https://lea-tortay.com/content/writings/github-pages-eleventy/
+* https://github.com/marketplace/actions/github-pages-action#%EF%B8%8F-create-ssh-deploy-key
