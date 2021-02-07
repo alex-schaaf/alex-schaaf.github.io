@@ -7,6 +7,14 @@ a {
     @apply text-primary-400;
 }
 
+code {
+  @apply text-sm px-2 py-1 rounded  bg-gray-800 text-red-500;
+}
+
+a code {
+  @apply underline;
+}
+
 .post p {
     @apply py-2;
 }
@@ -15,11 +23,21 @@ a {
     @apply px-2 py-2;
 }
 
-.post code {
-    @apply text-xs;
+.post pre code {
+    @apply text-xs p-0;
 }
 
+.post pre code ins {
+  @apply pl-4;
+}
 
+.post pre code .highlight-line {
+  @apply pl-4;
+}
+
+h2 {
+  @apply font-bold text-primary-400 pt-4;
+}
 
 
 /* Generated with http://k88hudson.github.io/syntax-highlighting-theme-generator/www */
@@ -36,7 +54,7 @@ a {
 */
 pre[class*="language-"],
 code[class*="language-"] {
-  color: #f9fafb;
+  color: #d8d8d8;
   font-size: 13px;
   text-shadow: none;
   font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
@@ -116,7 +134,7 @@ pre[class*="language-"] {
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: #ffffff;
+  color: #d8d8d8;
   background: #1f2937;
 }
 .token.atrule,
@@ -158,10 +176,33 @@ pre[class*="language-"] > code[class*="language-"] {
   right: 0;
   padding: inherit 0;
   margin-top: 1em;
-  background: #334155;
-  box-shadow: inset 5px 0 0 #4ade80;
+  margin: 0;
   z-index: 0;
   pointer-events: none;
   line-height: inherit;
   white-space: pre;
+}
+
+.highlight-line-add {
+  /* display: inline-block; */
+  /* background: #23393E; */
+  box-shadow: -4px 0px 0px 0px #4ade80;
+  /* border-left: 2px solid #4ade80; */
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+}
+
+.highlight-line-add .operator {
+  /* background: #23393E; */
+}
+
+.highlight-line-remove {
+  /* background: #33303E; */
+  /* border-left: 5px solid #FB7185; */
+  text-decoration: none;
+}
+
+.highlight-line-remove .operator {
+  /* background: #33303E; */
 }
