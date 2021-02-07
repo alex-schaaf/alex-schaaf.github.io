@@ -1,0 +1,12 @@
+---
+layout: layouts/base.njk
+---
+<div class="post">
+  <div class="mb-4">
+    <h1 class="text-xl font-bold text-red-500">
+      {{ title }}
+    </h1>
+    <h2 class="text-xs text-gray-500">{{ date | readableDate }}</h2>
+  </div>
+  {{ content | safe }}
+</div>

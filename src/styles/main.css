@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+a {
+    @apply text-red-500;
+}
+
+.post p {
+    @apply py-2;
+}
+
+.post pre {
+    @apply bg-gray-700 px-2 py-2;
+}
+
+.post code {
+    @apply text-xs;
+}
