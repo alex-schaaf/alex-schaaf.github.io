@@ -1,4 +1,4 @@
 ---
-title: Home
+title: Alexander Schaaf
 layout: layouts/index.njk
 ---
