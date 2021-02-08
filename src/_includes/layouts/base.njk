@@ -10,27 +10,17 @@
 </head>
 
 <body>
-  <div>
-    <header>
-      <nav>
-        <div>
-          <a href="/" class="title">
-            Alexander Schaaf
-          </a>
-          <!-- <a href="/">
-            About
-          </a> -->
-        </div>
-
-      </nav>
-    </header>
-    <main>
-      <div>
-        {{ content | safe }}
-      </div>
-    </main>
-    <footer style="height: 4em;"></footer>
-  </div>
+  <header>
+    <nav>
+      <a href="/" class="title">
+        Alexander Schaaf
+      </a>
+    </nav>
+  </header>
+  <main>
+    {{ content | safe }}
+  </main>
+  <footer style="min-height: 4em;"></footer>
 </body>
 
 </html>

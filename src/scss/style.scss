@@ -25,7 +25,7 @@ main {
     margin-top: 5em;
     padding-left: 1.5em;
     padding-right: 1.5em;
-    max-width: 800px;
+    max-width: 600px;
 }
 
 a {
@@ -68,6 +68,15 @@ pre code {
 
 .post p {
     line-height: 1.6;
+}
+
+.footnotes-sep {
+  display: none;
+}
+
+.post .footnotes-list {
+  font-size: 0.8em;
+  margin-top: 4em;
 }
 
 $spaces: (1, 2, 3, 4, 5, 10, 20);

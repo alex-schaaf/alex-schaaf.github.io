@@ -6,9 +6,9 @@ layout: layouts/base.njk
     <h1 class="title">
       {{ title }}
     </h1>
-    <div class="date">{{ date | readableDate }}</div>
+    <span class="date">{{ date | readableDate }}</span>
   </div>
-  <div >
+  <div>
     {{ content | safe }}
   </div>
 </div>
