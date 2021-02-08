@@ -4,7 +4,7 @@
   "scripts": {
     "watch:eleventy": "eleventy --serve",
     "watch:sass": "npm run sass -- --watch",
-    "start": "npm-run-all sass --parallel watch:*",
+    "serve": "npm-run-all sass --parallel watch:*",
     "sass": "sass --style=compressed src/scss/style.scss src/css/style.css",
     "build": "npm run sass && eleventy"
   },
