@@ -10,7 +10,7 @@ layout: layouts/post.njk
 
 Syncing highlights from my Kindle without relying on Amazon's [Whispersync](https://www.theverge.com/2020/1/31/21117217/amazon-kindle-tracking-page-turn-taps-e-reader-privacy-policy-security-whispersync) involves copying your clippings file from the Kindle, either using tools such as [Calibre](https://calibre-ebook.com/), or manually. And the Kindle just dumps all highlights into one file - which is great if you just want to search over all your highlights. But I find myself often just wanting to conveniently look at my highlights from single book.
 
-So as an exercise in further learning Go I decided to write a little program that can be easily executed whenever. An advantage of using a compiled language like Go is that provides us with a nice binary program we can compile for any common platflorm and easily automate it to run whenever we connect a Kindle - without having to manage Python environments.
+So as an exercise in further learning Go I decided to write a little program that can be easily executed whenever I connect my kindle. An advantage of using a compiled language like Go is that provides us with a nice binary program we can compile for any common platflorm and easily automate it to run whenever we connect a Kindle - without having to manage Python environments.
 
 So let's start out with our `main` function and load open the clippings text file from the connected Kindle device. You may have to modify the path depending on your device and operating system.
 
@@ -400,7 +400,7 @@ The only thing missing is to allow passing a destination folder parameter to the
 
 ```
 
-Awesome! That's it.
+Awesome! That's it. Compile it and run it whenever you want to sync your highlights. Or write some code to automate running the script whenever a USB device mounts!
 
 ## All the code
 
