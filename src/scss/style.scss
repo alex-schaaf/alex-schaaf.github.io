@@ -37,6 +37,10 @@ a:hover {
     text-decoration: underline;
 }
 
+.post a {
+  color: $color-primary;
+}
+
 pre {
     
     background: rgb(233, 233, 233);
