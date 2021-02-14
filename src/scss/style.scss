@@ -245,3 +245,12 @@ pre[class*="language-"] > code[class*="language-"] {
   white-space: pre;
 }
 
+.highlight-line-active {
+  display:  inline-block;
+  width: 100%;
+  background: #F9F7C1;
+}
+
+.token.operator {
+  background: inherit;
+}
