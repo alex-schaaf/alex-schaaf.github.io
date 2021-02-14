@@ -8,8 +8,6 @@ tags:
 layout: layouts/post.njk
 ---
 
-macOS
-
 I really don't want to use Amazon's Whispersync due to privacy concerns - but I also can't be bothered to manually sync and sort my Kindle highlights. I decided to write a little program in Go that can be easily executed when my Kindle is connected to my laptop.
 
 Normally, my go-to language of choice for such scripts is *Python* - but I'm currently in the process of learning *Go* and try to use it whenever possible. Also *Go* provides us with a nice binary program we can compile for any common platflorm and easily automate it to run whenever we connect a Kindle - without having to manage Python environments.
@@ -276,7 +274,7 @@ func saveHighlight(hl highlightData, loc string) {
 
 Check if book file exists, if not create with book title and author
 
-```go/10-16
+```go/10-18
 func saveHighlight(hl highlightData, loc string) {
 	if _, err := os.Stat(loc); os.IsNotExist(err) {
 		os.Mkdir(loc, os.ModePerm)
@@ -289,7 +287,10 @@ func saveHighlight(hl highlightData, loc string) {
 
     bookFile := authorFolder + "/" + highlight.book + ".md"
 	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
-		err := ioutil.WriteFile(bookFile, []byte("# "+highlight.book+"\n## "+highlight.author), 0755)
+		err := ioutil.WriteFile(
+            bookFile, 
+            []byte("# "+highlight.book+"\n## "+highlight.author), 
+            0755)
 		if err != nil {
 			log.Fatal(er)
 		}
@@ -299,7 +300,7 @@ func saveHighlight(hl highlightData, loc string) {
 
 Now we check if a given highlight already exists in a file, as to append it again everytime we run the program. If so, we return from the function and do nothing.
 
-```go/18-25
+```go/20-28
 func saveHighlight(highlight highlightData, highlightsFolder string) {
 	if _, err := os.Stat(highlightsFolder); os.IsNotExist(err) {
 		os.Mkdir(highlightsFolder, os.ModePerm)
@@ -312,7 +313,10 @@ func saveHighlight(highlight highlightData, highlightsFolder string) {
 
 	bookFile := authorFolder + "/" + highlight.book + ".md"
 	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
-		err := ioutil.WriteFile(bookFile, []byte("# "+highlight.book+"\n## "+highlight.author), 0755)
+		err := ioutil.WriteFile(
+            bookFile, 
+            []byte("# "+highlight.book+"\n## "+highlight.author), 
+            0755)
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -331,7 +335,7 @@ func saveHighlight(highlight highlightData, highlightsFolder string) {
 
 If the highlight text doesn't yet exist, we append it to the file, together with it's timestamp and location
 
-```go/27-40
+```go/30-43
 func saveHighlight(highlight highlightData, highlightsFolder string) {
 	if _, err := os.Stat(highlightsFolder); os.IsNotExist(err) {
 		os.Mkdir(highlightsFolder, os.ModePerm)
@@ -344,7 +348,10 @@ func saveHighlight(highlight highlightData, highlightsFolder string) {
 
 	bookFile := authorFolder + "/" + highlight.book + ".md"
 	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
-		err := ioutil.WriteFile(bookFile, []byte("# "+highlight.book+"\n## "+highlight.author), 0755)
+		err := ioutil.WriteFile(
+            bookFile, 
+            []byte("# "+highlight.book+"\n## "+highlight.author), 
+            0755)
 		if err != nil {
 			log.Fatal(err)
 		}
