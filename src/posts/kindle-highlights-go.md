@@ -1,5 +1,5 @@
 ---
-title: Automatically download and parse Kindle highlights using Go
+title: Automate parsing Kindle highlights using Go
 date: 2020-02-14
 tags: 
   - post
@@ -67,7 +67,7 @@ The Color of Magic (Terry David John Pratchett)
 So, naturally we want to save all this. We could also use a `map`, but a simple data `struct` can be handled much more intuitively (with autocompletion!).
 
 ```go
-type highlight struct {
+type highlightData struct {
 	author    string
 	book      string
 	timestamp string
@@ -143,8 +143,8 @@ When we hit a separator, we want to append the current highlight object to our s
     // ...
     var counter int
 
-    var highlights []highlight
-    var hl highlight = highlight{}
+    var highlights []highlightData
+    var hl highlightData = highlight{}
 
     for scanner.Scan() {
         line := scanner.Text()
@@ -155,7 +155,7 @@ When we hit a separator, we want to append the current highlight object to our s
         
         if line == separator {
             highlights = append(highlights, hl)
-			hl = highlight{}
+			hl = highlightData{}
             counter = 0
             continue
         }
@@ -170,7 +170,7 @@ Next up is the second header line in our highlights, containing the highlight lo
 func parseLocDatetime(line string) (string, string) {
 	header := strings.Split(line, " | ")
 	locRaw := header[0]
-	re := regexp.MustCompile(`\d*-\d*`)
+	re := regexp.MustCompile(`[\d]+-[\d]+`)
 	locRange := re.FindString(locRaw)
 
 	location := locRange
@@ -187,8 +187,8 @@ and add it to our parsing loop:
     // ...
     var counter int
 
-    var highlights []highlight
-    var hl highlight = highlight{}
+    var highlights []highlightData
+    var hl highlightData = highlight{}
 
     for scanner.Scan() {
         line := scanner.Text()
@@ -201,7 +201,7 @@ and add it to our parsing loop:
         
         if line == separator {
             highlights = append(highlights, hl)
-			hl = highlight{}
+			hl = highlightData{}
             counter = 0
             continue
         }
@@ -216,8 +216,8 @@ Next up is the actualy highlight text - which is much simpler to parse, at we ju
     // ...
     var counter int
 
-    var highlights []highlight
-    var hl highlight = highlight{}
+    var highlights []highlightData
+    var hl highlightData = highlightData{}
 
     for scanner.Scan() {
         line := scanner.Text()
@@ -229,7 +229,7 @@ Next up is the actualy highlight text - which is much simpler to parse, at we ju
         } else {
             if line == separator {
                 highlights = append(highlights, hl)
-			    hl = highlight{}
+			    hl = highlightData{}
                 counter = 0
                 continue
             }
@@ -243,88 +243,157 @@ Next up is the actualy highlight text - which is much simpler to parse, at we ju
 Note that for this to work properly, we have to first check if the line is a separator, as we really don't want that in our highlight text. So we move the code checking for that into the `else` block in front of where we append the text.
 
 
-The total code so far 
+
+What's missing is parsing the timestamp from a string into an actualy timestamp so we can format it as we see fit. I'll have a go at that and add functionality to save our clippings to disk sorted into folders and files by author and book titles.
+
+
+## Saving it all to disk
+
+Check if highlights folder exists, if not create
 
 ```go
-package main
-
-import (
-	"bufio"
-	"log"
-	"os"
-	"regexp"
-	"strings"
-)
-
-const separator string = "=========="
-
-type highlight struct {
-	author    string
-	book      string
-	timestamp string
-	location  string
-	text      string
+func saveHighlight(hl highlightData, loc string) {
+	if _, err := os.Stat(loc); os.IsNotExist(err) {
+		os.Mkdir(loc, os.ModePerm)
+	}
 }
+```
 
-func parseAuthorTitle(line string) (string, string) {
-	splitLines := strings.Split(line, "(")
-	bookRaw := splitLines[0]
-	authorRaw := splitLines[1]
+Check if author folder exists, if not create
 
-	book := strings.TrimSpace(bookRaw)
-	author := strings.Trim(authorRaw, ")")
-	return author, book
+```go/4-8
+func saveHighlight(hl highlightData, loc string) {
+	if _, err := os.Stat(loc); os.IsNotExist(err) {
+		os.Mkdir(loc, os.ModePerm)
+	}
+
+    authorFolder := highlightsFolder + "/" + highlight.author
+	if _, err := os.Stat(authorFolder); os.IsNotExist(err) {
+		os.Mkdir(authorFolder, os.ModePerm)
+	}
 }
+```
 
-func parseLocDatetime(line string) (string, string) {
-	header := strings.Split(line, " | ")
-	locRaw := header[0]
-	re := regexp.MustCompile(`\d*-\d*`)
-	locRange := re.FindString(locRaw)
+Check if book file exists, if not create with book title and author
 
-	location := locRange
+```go/10-16
+func saveHighlight(hl highlightData, loc string) {
+	if _, err := os.Stat(loc); os.IsNotExist(err) {
+		os.Mkdir(loc, os.ModePerm)
+	}
 
-	dateRaw := header[1]
-	timestamp := dateRaw[7:]
-	return location, timestamp
+    authorFolder := highlightsFolder + "/" + highlight.author
+	if _, err := os.Stat(authorFolder); os.IsNotExist(err) {
+		os.Mkdir(authorFolder, os.ModePerm)
+	}
+
+    bookFile := authorFolder + "/" + highlight.book + ".md"
+	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
+		err := ioutil.WriteFile(bookFile, []byte("# "+highlight.book+"\n## "+highlight.author), 0755)
+		if err != nil {
+			log.Fatal(er)
+		}
+	}
 }
+```
 
-func main() {
-	file, err := os.Open("/Volumes/Kindle/documents/My Clippings.txt")
+Now we check if a given highlight already exists in a file, as to append it again everytime we run the program. If so, we return from the function and do nothing.
+
+```go/18-25
+func saveHighlight(highlight highlightData, highlightsFolder string) {
+	if _, err := os.Stat(highlightsFolder); os.IsNotExist(err) {
+		os.Mkdir(highlightsFolder, os.ModePerm)
+	}
+
+	authorFolder := highlightsFolder + "/" + highlight.author
+	if _, err := os.Stat(authorFolder); os.IsNotExist(err) {
+		os.Mkdir(authorFolder, os.ModePerm)
+	}
+
+	bookFile := authorFolder + "/" + highlight.book + ".md"
+	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
+		err := ioutil.WriteFile(bookFile, []byte("# "+highlight.book+"\n## "+highlight.author), 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	fileBytes, err := ioutil.ReadFile(bookFile)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	scanner := bufio.NewScanner(file)
-
-	scanner.Split(bufio.ScanLines)
-
-	var counter int
-
-	var highlights []highlight
-	var hl highlight = highlight{}
-
-	for scanner.Scan() {
-		line := scanner.Text()
-		if counter == 0 {
-			hl.author, hl.book = parseAuthorTitle(line)
-		} else if counter == 1 {
-			hl.location, hl.timestamp = parseLocDatetime(line)
-		} else {
-			if line == separator {
-				highlights = append(highlights, hl)
-				hl = highlight{}
-				counter = 0
-				continue
-			}
-			hl.text = hl.text + line
-		}
-		counter++
+	fileContent := string(fileBytes)
+	if strings.Contains(fileContent, highlight.text) {
+		return
 	}
-
-	file.Close()
 }
-
 ```
 
-What's missing is parsing the timestamp from a string into an actualy timestamp so we can format it as we see fit. In my next post I'll have a go at that and add functionality to save our clippings to disk sorted into folders and files by author and book titles.
+If the highlight text doesn't yet exist, we append it to the file, together with it's timestamp and location
+
+```go/27-40
+func saveHighlight(highlight highlightData, highlightsFolder string) {
+	if _, err := os.Stat(highlightsFolder); os.IsNotExist(err) {
+		os.Mkdir(highlightsFolder, os.ModePerm)
+	}
+
+	authorFolder := highlightsFolder + "/" + highlight.author
+	if _, err := os.Stat(authorFolder); os.IsNotExist(err) {
+		os.Mkdir(authorFolder, os.ModePerm)
+	}
+
+	bookFile := authorFolder + "/" + highlight.book + ".md"
+	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
+		err := ioutil.WriteFile(bookFile, []byte("# "+highlight.book+"\n## "+highlight.author), 0755)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	fileBytes, err := ioutil.ReadFile(bookFile)
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileContent := string(fileBytes)
+	if strings.Contains(fileContent, highlight.text) {
+		return
+	}
+
+    file, err := os.OpenFile(bookFile, os.O_APPEND|os.O_WRONLY, 0644)
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    if _, err = file.WriteString("\n\n### " + highlight.timestamp); err != nil {
+        panic(err)
+    }
+    if _, err = file.WriteString("\n#### " + strings.Title(highlight.location)); err != nil {
+        panic(err)
+    }
+    if _, err = file.WriteString("\n\n" + highlight.text); err != nil {
+        panic(err)
+    }
+}
+```
+
+With that done, we will iterate over all highlights in the `main` function and put each into our newly written `saveHighlight` function:
+
+```go
+    // ...
+    for _, highlight := range highlights {
+            saveHighlight(highlight, "~/kindle-highlights")
+    }
+```
+
+
+Which will write the contents to `~/kindle-highlights/author/bookTitle.md` as Markdown.
+
+```
+# The Color of Magic
+## Terry David John Pratchett
+
+### Sunday, 14 February 2021 09:24:24
+#### Location 2-3
+
+The Colour of Magic is Terry Pratchett’s maiden voyage through the bizarre land of Discworld.
+```
