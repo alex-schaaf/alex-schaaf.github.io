@@ -25,7 +25,7 @@ main {
     margin-top: 5em;
     padding-left: 1.5em;
     padding-right: 1.5em;
-    max-width: 600px;
+    max-width: 800px;
 }
 
 a {
@@ -35,6 +35,10 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+.post a {
+  color: $color-primary;
 }
 
 pre {
