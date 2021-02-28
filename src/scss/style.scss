@@ -150,7 +150,7 @@ pre[class*="language-"] {
   padding: 1em;
   margin: .5em 0;
   overflow: auto;
-  background: #f8f5ec;
+  background: #f8f8f8;
 }
 :not(pre) > code[class*="language-"] {
   padding: .1em .3em;
@@ -248,7 +248,8 @@ pre[class*="language-"] > code[class*="language-"] {
 .highlight-line-active {
   display:  inline-block;
   width: 100%;
-  background: #F9F7C1;
+  background: #f8f8f8;
+  box-shadow: inset -5px 0 0 lightgreen;
 }
 
 .token.operator {
