@@ -31,7 +31,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.setUseGitIgnore(false);
   eleventyConfig.setLibrary("md", markdownLibrary)
   eleventyConfig.setTemplateFormats([
-    "md", "css", "jpg"
+    "md", "css", "jpg", "woff"
   ]);
   return {
     dir: { input: 'src', output: '_site' }
