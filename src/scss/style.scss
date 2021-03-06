@@ -1,12 +1,25 @@
-$font-stack: 'Roboto', sans-serif;
+@font-face {
+  font-family: "etufte";
+  src: url("../static/fonts/et-book-roman-line-figures.woff") format("woff");
+}
+
+@font-face {
+  font-family: "etufte";
+  src: url("../static/fonts/et-book-bold-line-figures.woff") format("woff");
+  font-weight: bold;
+}
+
+
+$font-stack: 'etufte', sans-serif;
 $font-mono: 'Roboto Mono', monospace;
 $color-text: #292524;
 $color-text-light: #78716C;
 $color-primary: #EF4444;
 
 body {
-    font: 100% $font-stack;
+    font: 120% $font-stack;
     color: $color-text;
+    // background: #fffff8;
 }
 
 nav {
@@ -42,13 +55,13 @@ a:hover {
 }
 
 pre {
-    
+    border: 1px dashed rgb(192, 192, 192);
     background: rgb(233, 233, 233);
     padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
 pre code {
-    font: 75% $font-mono;
+    font: 80% $font-mono;
 }
 
 .posts .title {
@@ -67,7 +80,8 @@ pre code {
 }
 
 .post .title {
-    font-size: 1.8em;
+    font-size: 3em;
+    font-weight: bold;
 }
 
 .post p {
@@ -161,6 +175,7 @@ pre[class*="language-"] {
 /*********************************************************
 * Tokens
 */
+
 .namespace {
   opacity: .7;
 }
