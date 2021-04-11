@@ -2,15 +2,15 @@
 
 $font-stack: 'Vollkorn', serif;
 $font-mono: 'Roboto Mono', monospace;
-$color-text: #CBD5E1;
-$color-heading: #FBBF24;
+$color-text: #181818;
+$color-heading: #111827;
 $color-text-light: #6B7280;
-$color-primary: #FBBF24;
-$color-bg: #18212F;
+$color-primary: #EF4444;
+$color-bg: #fff;
 
 
 body {
-    font: 120% $font-stack;
+    font: 100% "Verdana";
     color: $color-text;
     background: $color-bg;
 }
@@ -23,9 +23,8 @@ nav {
 
 nav .title {
     color: $color-heading;
-    font-size: 1.75em;
+    font-size: 1.25rem;
     font-weight: bold;
-    letter-spacing: 0.1rem;
     margin-right: 0.5em;
 }
 
@@ -46,20 +45,18 @@ a:hover {
 }
 
 .post a {
-  color: $color-primary;
+  color: $color-text;
+  text-decoration: underline;
 }
 
-
+.post a:hover {
+    color: $color-primary;
+}
 
 .posts .title a {
     color: $color-heading;
-    font-size: 1.2em;
     font-weight: bold;
     padding: 0 0 5px 0;
-}
-
-.post h2 {
-    color: white;
 }
 
 .posts .listing {
@@ -73,12 +70,12 @@ a:hover {
 
 .post .title {
     color: $color-heading;
-    font-size: 2.5em;
+    font-size: 1.5em;
     font-weight: bold;
 }
 
 .post p {
-    line-height: 1.75;
+    line-height: 1.5;
 }
 
 .footnotes-sep {
@@ -95,7 +92,7 @@ pre {
 }
 
 pre code {
-    font: 80% $font-mono;
+    font: 90% $font-mono;
 }
 
 $spaces: (1, 2, 3, 4, 5, 10, 20);
