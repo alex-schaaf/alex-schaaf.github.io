@@ -1,27 +1,12 @@
 @use "./syntaxHighlighting.scss";
 
-
-@font-face {
-  font-family: "etufte";
-  src: url("../static/fonts/et-book-roman-line-figures.woff") format("woff");
-}
-
-@font-face {
-  font-family: "etufte";
-  src: url("../static/fonts/et-book-bold-line-figures.woff") format("woff");
-  font-weight: bold;
-}
-
-
-$font-stack: 'etufte', sans-serif;
+$font-stack: 'Vollkorn', serif;
 $font-mono: 'Roboto Mono', monospace;
-$color-text: #000;
-$color-text-dark: #F5F5F5;
-$color-text-light: #78716C;
-$color-primary: #EF4444;
-$color-bg: #fff;
-$color-bg-dark: #000000;
-$color-code-bg: #1d2021;
+$color-text: #CBD5E1;
+$color-heading: #E5E7EB;
+$color-text-light: #6B7280;
+$color-primary: #FBBF24;
+$color-bg: #18212F;
 
 
 body {
@@ -37,8 +22,10 @@ nav {
 }
 
 nav .title {
+    color: $color-heading;
     font-size: 1.75em;
     font-weight: bold;
+    letter-spacing: 0.1rem;
     margin-right: 0.5em;
 }
 
@@ -62,18 +49,17 @@ a:hover {
   color: $color-primary;
 }
 
-pre {
-    border-radius: 5px;
-}
 
-pre code {
-    font: 80% $font-mono;
-}
 
-.posts .title {
+.posts .title a {
+    color: $color-heading;
     font-size: 1.2em;
     font-weight: bold;
     padding: 0 0 5px 0;
+}
+
+.post h2 {
+    color: $color-heading;
 }
 
 .posts .listing {
@@ -86,12 +72,13 @@ pre code {
 }
 
 .post .title {
-    font-size: 3em;
+    color: $color-heading;
+    font-size: 2.5em;
     font-weight: bold;
 }
 
 .post p {
-    line-height: 1.5;
+    line-height: 1.75;
 }
 
 .footnotes-sep {
@@ -101,6 +88,14 @@ pre code {
 .post .footnotes-list {
   font-size: 0.8em;
   margin-top: 4em;
+}
+
+pre {
+    border-radius: 5px;
+}
+
+pre code {
+    font: 80% $font-mono;
 }
 
 $spaces: (1, 2, 3, 4, 5, 10, 20);
