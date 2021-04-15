@@ -9,10 +9,17 @@ $color-primary: #EF4444;
 $color-bg: #fff;
 
 
+
+
 body {
     font: 100% "Verdana";
     color: $color-text;
     background: $color-bg;
+}
+
+header {
+    display: flex;
+    justify-content: center;
 }
 
 nav {
@@ -32,7 +39,14 @@ main {
     margin-top: 5em;
     padding-left: 1.5em;
     padding-right: 1.5em;
+    display: flex;
+    justify-content: center;
+}
+
+main .content {
     max-width: 800px;
+    width: 100%;
+    display: inline-block;
 }
 
 a {
@@ -45,6 +59,7 @@ a:hover {
 }
 
 .post a {
+  width: 100%;
   color: $color-text;
   text-decoration: underline;
 }
