@@ -1,74 +1,71 @@
 @use "./syntaxHighlighting.scss";
 
-$font-stack: 'Vollkorn', serif;
-$font-mono: 'Roboto Mono', monospace;
+$font-stack: "Vollkorn", serif;
+$font-mono: "Roboto Mono", monospace;
 $color-text: #181818;
 $color-heading: #111827;
-$color-text-light: #6B7280;
-$color-primary: #EF4444;
+$color-text-light: #6b7280;
+$color-primary: #ef4444;
 $color-bg: #fff;
 
-
-
-
 body {
-    font: 100% "Verdana";
-    color: $color-text;
-    background: $color-bg;
-    padding: 0;
-    margin: 0;
+  font: 100% "Verdana";
+  color: $color-text;
+  background: $color-bg;
+  padding: 0;
+  margin: 0;
 }
 
 a {
-    text-decoration: none;
-    color: $color-text;
+  text-decoration: none;
+  color: $color-text;
 }
 
 a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 header {
-    display: flex;
-    font: 100% "Roboto Mono";
-    justify-content: center;
-    background: #18212f;
-    color: #fff;
+  display: flex;
+  font: 100% "Roboto Mono";
+  justify-content: center;
+  background: #18212f;
+  color: #fff;
 }
 
 header .container {
-    display: inline-block;
-    max-width: 800px;
-    width: 100%;
+  display: inline-block;
+  max-width: 800px;
+  width: 100%;
 }
 
 header a {
-    color: #fff;
+  color: #fff;
 }
 
 nav {
-    padding-top: 1.5em;
-    padding-bottom: 1.5em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
 }
 
 nav .title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-right: 0.5em;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-right: 0.5em;
 }
 
 main {
-    margin-top: 5em;
-    padding-left: 1.5em;
-    padding-right: 1.5em;
-    display: flex;
-    justify-content: center;
+  margin-top: 5em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+  display: flex;
+  justify-content: center;
 }
 
 main .content {
-    max-width: 800px;
-    width: 100%;
-    display: inline-block;
+  max-width: 800px;
+  width: 100%;
+  display: inline-block;
 }
 
 .post a {
@@ -78,32 +75,32 @@ main .content {
 }
 
 .post a:hover {
-    color: $color-primary;
+  color: $color-primary;
 }
 
 .posts .title a {
-    color: $color-heading;
-    font-weight: bold;
-    padding: 0 0 5px 0;
+  color: $color-heading;
+  font-weight: bold;
+  padding: 0 0 5px 0;
 }
 
 .posts .listing {
-    margin-bottom: 0.75em;
+  margin-bottom: 0.75em;
 }
 
 .date {
-    font-size: 0.9em;
-    color: $color-text-light;
+  font-size: 0.9em;
+  color: $color-text-light;
 }
 
 .post .title {
-    color: $color-heading;
-    font-size: 1.5em;
-    font-weight: bold;
+  color: $color-heading;
+  font-size: 1.5em;
+  font-weight: bold;
 }
 
 .post p {
-    line-height: 1.5;
+  line-height: 1.5;
 }
 
 .footnotes-sep {
@@ -116,35 +113,34 @@ main .content {
 }
 
 pre {
-    border-radius: 5px;
+  border-radius: 5px;
 }
 
 pre code {
-    font: 90% $font-mono;
+  font: 90% $font-mono;
 }
 
 $spaces: (1, 2, 3, 4, 5, 10, 20);
 $sides: (top, bottom, left, right);
 
 @each $space in $spaces {
-    @each $side in $sides {
-        .m#{str-slice($side, 0, 1)}-#{$space} {
-            margin-#{$side}: #{$space}px !important;
-        }
-
-        .p#{str-slice($side, 0, 1)}-#{$space} {
-            padding-#{$side}: #{$space}px !important;
-          }
+  @each $side in $sides {
+    .m#{str-slice($side, 0, 1)}-#{$space} {
+      margin-#{$side}: #{$space}px !important;
     }
 
-    .p-#{$space} {
-        padding: #{$space}px #{$space}px #{$space}px #{$space}px !important;
+    .p#{str-slice($side, 0, 1)}-#{$space} {
+      padding-#{$side}: #{$space}px !important;
     }
+  }
+
+  .p-#{$space} {
+    padding: #{$space}px #{$space}px #{$space}px #{$space}px !important;
+  }
 }
 
-
 .highlight-line-active {
-  display:  inline-block;
+  display: inline-block;
   width: 100%;
   color: inherit;
   background: inherit;
