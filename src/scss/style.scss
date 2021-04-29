@@ -1,14 +1,88 @@
 @use "./syntaxHighlighting.scss";
+
+$color-primary: #ef4444;
+$color-bg: hsl(0, 0, 10);
+$color-text: hsl(0, 0, 80);
+
 body {
   display: flex;
   justify-content: center;
 
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 13pt;
+
+  padding-top: 50px;
+
+  background: $color-bg;
+  color: $color-text;
+
+  overflow-y: scroll;
 }
 
 .container {
   width: 100%;
   max-width: 800px;
-  background: gray;
+}
+
+.page-title {
+  font-size: 2rem;
+
+  a {
+    color: $color-text;
+    text-decoration: none;
+  }
+}
+
+.page-subtitle {
+  letter-spacing: 0.05rem;
+  font-family: "Roboto Mono";
+}
+
+header {
+  padding-bottom: 1rem;
+}
+
+h1 {
+  font-size: 1.75rem;
+}
+
+a {
+  color: $color-primary;
+}
+
+.about {
+  padding-top: 1rem;
+}
+
+.posts {
+  padding-top: 1rem;
+}
+
+p {
+  line-height: 2rem;
+}
+
+.highlight-line-active {
+  display: inline-block;
+  width: 100%;
+  color: inherit;
+  background: inherit;
+  // box-shadow: inset -5px 0 0 yellowgreen;
+}
+
+::-webkit-scrollbar {
+  background: $color-bg;
+  // border-radius: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: hsl(0, 0, 15);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: hsl(0, 0, 20);
+  // border-radius: 5px;
 }
