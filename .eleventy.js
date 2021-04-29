@@ -30,6 +30,11 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(syntaxHighlight);
   eleventyConfig.setUseGitIgnore(false);
   eleventyConfig.setLibrary("md", markdownLibrary)
+
+  eleventyConfig.addPairedShortcode("markdown", (content) => {
+    return markdownLibrary.render(content);
+  });
+
   eleventyConfig.setTemplateFormats([
     "md", "css", "jpg", "woff"
   ]);

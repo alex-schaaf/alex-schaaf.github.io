@@ -2,6 +2,14 @@
 layout: layouts/base.njk
 ---
 
+<div class="about">
+  <h1>About me</h1>
+  
+  {% markdown %}
+    {%- include "about.md" -%}
+  {% endmarkdown %}
+</div>
+
 <div class="posts">
   <h1>Articles</h1>
   {%- for post in collections.post | reverse -%}
