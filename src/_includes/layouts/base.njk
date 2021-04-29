@@ -4,6 +4,7 @@
 <head>
   <title>{{ title }}</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/style.css">
@@ -11,18 +12,23 @@
 </head>
 
 <body>
-  <header>
-    <div class="container">
-      <nav>
-        <a href="/" class="title" style="display: inline-block;">alexander schaaf</a>
-        <a href="/about">about me</a>
-      </nav>
-    </div>
-  </header>
-  <main>
-    <div class="content">{{ content | safe }}</div>
-  </main>
-  <footer style="min-height: 4em;"></footer>
+  <div class="container">
+    <header>
+      <div>
+        <div class="page-title">
+          <a href="/">Alexander Schaaf</a>
+        </div>
+        <div class="page-subtitle">developer</div>
+      </div>
+      <div>
+        <nav></nav>
+      </div>
+    </header>
+    <main>
+      <div class="content">{{ content | safe }}</div>
+    </main>
+    <footer style="min-height: 4em;"></footer>
+  </div>
 </body>
 
 </html>
