@@ -1,8 +1,8 @@
 @use "./syntaxHighlighting.scss";
 
 $color-primary: #ef4444;
-$color-bg: hsl(0, 0, 10);
-$color-text: hsl(0, 0, 80);
+$color-bg: hsl(0deg, 0%, 10%);
+$color-text: hsl(0deg, 0%, 80%);
 
 body {
   display: flex;
@@ -17,7 +17,6 @@ body {
   background: $color-bg;
   color: $color-text;
 
-
   overflow-y: scroll;
 }
 
@@ -28,7 +27,6 @@ body {
 
 .page-title {
   font-size: 2rem;
-
 
   a {
     color: $color-text;
@@ -43,7 +41,6 @@ body {
 
 header {
   padding-bottom: 1rem;
-
 }
 
 h1 {
@@ -60,7 +57,15 @@ a {
 
 .posts {
   padding-top: 1rem;
+}
 
+.posts .listing {
+  padding-bottom: 0.5rem;
+}
+
+.date {
+  font-size: 0.8rem;
+  color: darken($color-text, 25%);
 }
 
 .projects {
@@ -86,12 +91,11 @@ p {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: hsl(0, 0, 15);
-
+  background: hsl(0deg, 0%, 15%);
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: hsl(0, 0, 20);
+  background: hsl(0deg, 0%, 20%);
   // border-radius: 5px;
 }

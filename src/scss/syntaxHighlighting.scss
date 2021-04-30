@@ -8,7 +8,7 @@
  * @version 1.0
  */
 
-$color-bg: hsl(0, 0, 10);
+$color-bg: hsl(0deg, 0%, 10%);
 
 code[class*="language-"],
 pre[class*="language-"] {
@@ -57,6 +57,7 @@ pre[class*="language-"] {
 :not(pre) > code[class*="language-"],
 pre[class*="language-"] {
   background: $color-bg; //#18212F;
+  font-size: 1rem;
 }
 
 /* Inline code */
