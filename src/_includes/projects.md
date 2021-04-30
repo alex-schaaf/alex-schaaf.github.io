@@ -1,0 +1,1 @@
+- [klip](https://github.com/alex-schaaf/klip) - a tiny Python command-line tool to snyc Kindle highlights into json or markdown files.
