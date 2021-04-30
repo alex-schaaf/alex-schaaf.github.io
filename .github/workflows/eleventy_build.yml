@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: '15.x'
+          node-version: "15.x"
 
       - run: npm ci
       - run: npm run build
@@ -24,4 +24,4 @@ jobs:
         with:
           deploy_key: ${{ secrets.ACTIONS_DEPLOY_KEY }}
           publish_dir: ./_site
-          cname: aschaaf.page
+          cname: aschaaf.dev
