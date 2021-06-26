@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <title>Automatically deploy a NextJS web app on a Raspberry Pi using Gitlab CI/CD</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+
+<body>
+  <div class="container">
+    <header>
+      <div>
+        <div class="page-title">
+          <a href="/">Alexander Schaaf</a>
+        </div>
+        <div class="page-subtitle">developer</div>
+      </div>
+      <div>
+        <nav></nav>
+      </div>
+    </header>
+    <main>
+      <div class="content"><div class="post">
+  <div>
+    <h1 class="title">
+      Automatically deploy a NextJS web app on a Raspberry Pi using Gitlab CI/CD
+    </h1>
+    <span class="date">June 26, 2020</span>
+  </div>
+  <div>
+    <p>I’ve built a small web app using <a href="http://nextjs.org">NextJS</a> and wanted a convenient way to deploy it on my Raspberry Pi for use within my local network. I wanted to have a CI/CD pipeline which reacts to me pushing new code to the <code>main</code> branch of my project repository to create a producton build and deploys it locally. Through work I have experience with the <a href="">GitLab</a> CI/CD pipeline, and I realized that they also offer their <a href="">GitLab Runner</a> as a stand-alone open-source software that I can run on my RBPi and register as the CI/CD runner on any of my GitLab repositories hosted on <a href="gitlab.com">GitLab.com</a>.</p>
+<h2 id="making-the-runner-work">Making the runner work <a class="direct-link" href="#making-the-runner-work">#</a></h2>
+<p>The first step is to actually install the GitLab runner on the RBPi and register it with out GitLab repository.</p>
+<p>Add the official GitLab repository:</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">curl</span> -L <span class="token string">"https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh"</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">bash</span></code></pre>
+<p>And then install it using</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> -E <span class="token function">apt-get</span> <span class="token function">install</span> gitlab-runner</code></pre>
+<p>Then we need to register the GitLab repository with our runner by using the provided registration token of our repository. You can find this one in your repository <code>Settings &gt; CI/CD</code> when expanding the <code>Runners</code> section.</p>
+<pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> gitlab-runner register -n <span class="token punctuation">\</span><br>  --url https://gitlab.com/ <span class="token punctuation">\</span><br>  --registration-token <span class="token variable">$REGISTRATION_TOKEN</span> <span class="token punctuation">\</span><br>  --executor shell <span class="token punctuation">\</span><br>  --description <span class="token string">"&lt;runner description>"</span></code></pre>
+<p>This will ask you for an executor. I went with the <code>shell</code> executor. Then make sure to add the GitLab runner to the Docker user group by running <code>sudo usermod -aG docker gitlab-runner</code>.</p>
+<p>Then we have to add the GitLab runner to the list of sudoers by opening up the file <code>/etc/sudoers</code> and appending <code>gitlab-runner ALL=(ALL) NOPASSWD: ALL</code> at the end.</p>
+<p>Make sure there’s no <code>.bash_logout</code> file present in your home folder or at <code>/home/gitlab-runner/</code> as <a href="https://docs.gitlab.com/runner/faq/README.html#job-failed-system-failure-preparing-environment">this can fail your pipeline</a>.</p>
+<h2 id="setting-up-docker-and-the-ci%2Fcd-pipeline">Setting up Docker and the CI/CD pipeline <a class="direct-link" href="#setting-up-docker-and-the-ci%2Fcd-pipeline">#</a></h2>
+<p>Our deployment will be done using <a href="">Docker</a>. For that we need a <code>Dockerfile</code> at the root of our project. Thankfully, NextJS already provides one <a href="https://nextjs.org/docs/deployment#docker-image">here</a> that I just copy-pasted into my project root. Feel free to craft your own though if you want a simpler one.</p>
+<p>Next up we create a <code>.gitlab-ci.yml</code> file at the root of our project repository. Now we can define a first <code>stage</code> of our pipeline. Jobs withing a <code>stage</code> will be executed in parallel, while different stages will be run consecutively. Commonly, different stages are used for testing, building and deployment. But for my personal project I’m happy to just go with a combined build &amp; deploy stage.</p>
+<p>So we specify the <code>deploy</code> stage and add a job called <code>deploy-prod</code> to it. Within the <code>script</code> block we can specify the commands to execute during this job. We need to build our Docker container using <code>docker build . -t &lt;your tag&gt;</code> and then run it using <code>docker run -d -p 3000:3000 --rm --name &lt;your tag&gt; &lt;name&gt;</code>.</p>
+<p>The result will look like this:</p>
+<pre class="language-yml"><code class="language-yml"><span class="token comment"># .gitlab-ci.yml</span><br><span class="token key atrule">image</span><span class="token punctuation">:</span> docker<br><span class="token key atrule">services</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> docker<span class="token punctuation">:</span>dind<br><span class="token key atrule">stages</span><span class="token punctuation">:</span><br>  <span class="token punctuation">-</span> deploy<br><span class="token key atrule">deploy-prod</span><span class="token punctuation">:</span><br>  <span class="token key atrule">stage</span><span class="token punctuation">:</span> deploy<br>  <span class="token key atrule">script</span><span class="token punctuation">:</span><br>    <span class="token punctuation">-</span> docker build . <span class="token punctuation">-</span>t purple<span class="token punctuation">-</span>tin<br>    <span class="token punctuation">-</span> docker run <span class="token punctuation">-</span>d <span class="token punctuation">-</span>p 3000<span class="token punctuation">:</span>3000 <span class="token punctuation">-</span><span class="token punctuation">-</span>rm <span class="token punctuation">-</span><span class="token punctuation">-</span>name purple<span class="token punctuation">-</span>tin purple<span class="token punctuation">-</span>tin</code></pre>
+<h2 id="running-the-pipeline">Running the pipeline <a class="direct-link" href="#running-the-pipeline">#</a></h2>
+<p>Running the pipeline is as simple as simply pushing new code to the repository on GitLab. Our runner will immediately notice and start running our defined pipeline. Upon success you can access your Next app on <code>http://&lt;raspberrypi IP address&gt;:3000/</code> within your local network!</p>
+
+  </div>
+</div></div>
+    </main>
+    <footer style="min-height: 4em;"></footer>
+  </div>
+</body>
+
+</html>
