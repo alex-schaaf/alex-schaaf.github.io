@@ -144,3 +144,11 @@ pre[class*="language-"] {
 .token.deleted {
   background: #fb4934;
 }
+
+code:not(pre code) {
+  background: #fb48341c;
+  padding-left: 0.4rem;
+  padding-right: 0.4rem;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+}
