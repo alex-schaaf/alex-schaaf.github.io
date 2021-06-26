@@ -1,7 +1,7 @@
 ---
 title: Automate parsing Kindle highlights using Go
-date: 2020-02-14
-tags: 
+date: 2021-02-14
+tags:
   - post
   - coding
   - go
@@ -46,6 +46,7 @@ func main() {
 }
 
 ```
+
 So now that we have access to every line in the file, we can have a look at the structure of the text file to figure out how to parse it. Here are two highlights:
 
 ```text
@@ -88,7 +89,7 @@ Now, for the parsing we always want to know the current line, but not of the hum
     var counter int
     for scanner.Scan() {
         line := scanner.Text()
-        
+
         if line == separator {
             counter = 0
             continue
@@ -131,7 +132,7 @@ Okay, now that we have our first part of parsed data and our data structure defi
         if counter == 0 {
             hl.author, hl.book = parseAuthorTitle(line)
         }
-        
+
         if line == separator {
             highlights = append(highlights, hl)
 			hl = HighlightData{}
@@ -145,7 +146,7 @@ Okay, now that we have our first part of parsed data and our data structure defi
 
 ## Parsing location and timestamp
 
-Next up is the second line in each highlight, containing its book location and timestamp. So we create a new function called `parseLocDatetime`, which also takes the line as an input and outputs the location and timestamp as strings. We split the line at the pipe `|` into the location on the left and timestamp on the right. 
+Next up is the second line in each highlight, containing its book location and timestamp. So we create a new function called `parseLocDatetime`, which also takes the line as an input and outputs the location and timestamp as strings. We split the line at the pipe `|` into the location on the left and timestamp on the right.
 
 We then use a regular expression to extract just the location numbers. `[\d]+-[\d]+` will do just fine for that. For the timestamp, we can just remove the `Added on ` and be done with it. If you want to actually parse the timestamp string into a timestamp-like object, this would be the place to do it. But I'm fine with the timestamp as it is.
 
@@ -183,7 +184,7 @@ Adding the function call to our parsing loop, only triggering it in the second l
         } else if counter == 1 {
             hl.location, hl.timestamp = parseLocDatetime(line)
         }
-        
+
         if line == separator {
             highlights = append(highlights, hl)
 			hl = HighlightData{}
@@ -274,8 +275,8 @@ func saveHighlight(hl HighlightData, loc string) {
     bookFile := authorFolder + "/" + highlight.Book + ".md"
 	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
 		err := ioutil.WriteFile(
-            bookFile, 
-            []byte("# "+highlight.Book+"\n## "+highlight.Author), 
+            bookFile,
+            []byte("# "+highlight.Book+"\n## "+highlight.Author),
             0755) // unix file permissions code
 		if err != nil {
 			log.Fatal(er)
@@ -300,8 +301,8 @@ func saveHighlight(highlight HighlightData, highlightsFolder string) {
 	bookFile := authorFolder + "/" + highlight.Book + ".md"
 	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
 		err := ioutil.WriteFile(
-            bookFile, 
-            []byte("# "+highlight.Book+"\n## "+highlight.Author), 
+            bookFile,
+            []byte("# "+highlight.Book+"\n## "+highlight.Author),
             0755)
 		if err != nil {
 			log.Fatal(err)
@@ -335,8 +336,8 @@ func saveHighlight(highlight HighlightData, highlightsFolder string) {
 	bookFile := authorFolder + "/" + highlight.Book + ".md"
 	if _, err := os.Stat(bookFile); os.IsNotExist(err) {
 		err := ioutil.WriteFile(
-            bookFile, 
-            []byte("# "+highlight.Book+"\n## "+highlight.Author), 
+            bookFile,
+            []byte("# "+highlight.Book+"\n## "+highlight.Author),
             0755)
 		if err != nil {
 			log.Fatal(err)

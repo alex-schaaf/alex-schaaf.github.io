@@ -1,6 +1,6 @@
 ---
-title: Automatically deploy a NextJS web app on a Raspberry Pi using Gitlab CI/CD
-date: 2020-06-26
+title: Automatically deploy a NextJS app on a Raspberry Pi using Gitlab CI/CD
+date: 2021-06-26
 tags:
   - post
   - devops
@@ -8,6 +8,8 @@ layout: layouts/post.njk
 ---
 
 I've built a small web app using [NextJS](http://nextjs.org) and wanted a convenient way to deploy it on my Raspberry Pi for use within my local network. I wanted to have a CI/CD pipeline which reacts to me pushing new code to the `main` branch of my project repository to create a producton build and deploys it locally. Through work I have experience with the [GitLab]() CI/CD pipeline, and I realized that they also offer their [GitLab Runner]() as a stand-alone open-source software that I can run on my RBPi and register as the CI/CD runner on any of my GitLab repositories hosted on [GitLab.com](gitlab.com).
+
+I'm running Ubuntu Server on my RBPi, so the entire tutorial should be applicable to any device running Ubuntu.
 
 ## Making the runner work
 
@@ -24,6 +26,8 @@ And then install it using
 ```bash
 sudo -E apt-get install gitlab-runner
 ```
+
+This will automatically install the right version for your device, e.g. the `arm64` version for the
 
 Then we need to register the GitLab repository with our runner by using the provided registration token of our repository. You can find this one in your repository `Settings > CI/CD` when expanding the `Runners` section.
 
