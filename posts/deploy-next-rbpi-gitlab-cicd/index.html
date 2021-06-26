@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <title>Automatically deploy a NextJS web app on a Raspberry Pi using Gitlab CI/CD</title>
+  <title>Automatically deploy a NextJS app on a Raspberry Pi using Gitlab CI/CD</title>
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
@@ -28,18 +28,20 @@
       <div class="content"><div class="post">
   <div>
     <h1 class="title">
-      Automatically deploy a NextJS web app on a Raspberry Pi using Gitlab CI/CD
+      Automatically deploy a NextJS app on a Raspberry Pi using Gitlab CI/CD
     </h1>
-    <span class="date">June 26, 2020</span>
+    <span class="date">June 26, 2021</span>
   </div>
   <div>
     <p>I’ve built a small web app using <a href="http://nextjs.org">NextJS</a> and wanted a convenient way to deploy it on my Raspberry Pi for use within my local network. I wanted to have a CI/CD pipeline which reacts to me pushing new code to the <code>main</code> branch of my project repository to create a producton build and deploys it locally. Through work I have experience with the <a href="">GitLab</a> CI/CD pipeline, and I realized that they also offer their <a href="">GitLab Runner</a> as a stand-alone open-source software that I can run on my RBPi and register as the CI/CD runner on any of my GitLab repositories hosted on <a href="gitlab.com">GitLab.com</a>.</p>
+<p>I’m running Ubuntu Server on my RBPi, so the entire tutorial should be applicable to any device running Ubuntu.</p>
 <h2 id="making-the-runner-work">Making the runner work <a class="direct-link" href="#making-the-runner-work">#</a></h2>
 <p>The first step is to actually install the GitLab runner on the RBPi and register it with out GitLab repository.</p>
 <p>Add the official GitLab repository:</p>
 <pre class="language-bash"><code class="language-bash"><span class="token function">curl</span> -L <span class="token string">"https://packages.gitlab.com/install/repositories/runner/gitlab-runner/script.deb.sh"</span> <span class="token operator">|</span> <span class="token function">sudo</span> <span class="token function">bash</span></code></pre>
 <p>And then install it using</p>
 <pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> -E <span class="token function">apt-get</span> <span class="token function">install</span> gitlab-runner</code></pre>
+<p>This will automatically install the right version for your device, e.g. the <code>arm64</code> version for the</p>
 <p>Then we need to register the GitLab repository with our runner by using the provided registration token of our repository. You can find this one in your repository <code>Settings &gt; CI/CD</code> when expanding the <code>Runners</code> section.</p>
 <pre class="language-bash"><code class="language-bash"><span class="token function">sudo</span> gitlab-runner register -n <span class="token punctuation">\</span><br>  --url https://gitlab.com/ <span class="token punctuation">\</span><br>  --registration-token <span class="token variable">$REGISTRATION_TOKEN</span> <span class="token punctuation">\</span><br>  --executor shell <span class="token punctuation">\</span><br>  --description <span class="token string">"&lt;runner description>"</span></code></pre>
 <p>This will ask you for an executor. I went with the <code>shell</code> executor. Then make sure to add the GitLab runner to the Docker user group by running <code>sudo usermod -aG docker gitlab-runner</code>.</p>
