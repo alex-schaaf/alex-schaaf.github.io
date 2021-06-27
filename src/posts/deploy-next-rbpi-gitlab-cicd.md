@@ -7,7 +7,7 @@ tags:
 layout: layouts/post.njk
 ---
 
-I've built a small web app using [NextJS](http://nextjs.org) and wanted a convenient way to deploy it on my Raspberry Pi for use within my local network. I wanted to have a CI/CD pipeline which reacts to me pushing new code to the `main` branch of my project repository to create a producton build and deploys it locally. Through work I have experience with the [GitLab]() CI/CD pipeline, and I realized that they also offer their [GitLab Runner]() as a stand-alone open-source software that I can run on my RBPi and register as the CI/CD runner on any of my GitLab repositories hosted on [GitLab.com](gitlab.com).
+I've built a small web app using [NextJS](http://nextjs.org) and wanted a convenient way to deploy it on my Raspberry Pi for use within my local network. I wanted to have a CI/CD pipeline which reacts to me pushing new code to the `main` branch of my project repository to create a producton build and deploys it locally. Through work I have experience with the GitLab CI/CD pipeline, and I realized that they also offer their [GitLab Runner]() as a stand-alone open-source software that I can run on my RBPi and register as the CI/CD runner on any of my GitLab repositories hosted on [GitLab.com](gitlab.com).
 
 I'm running Ubuntu Server on my RBPi, so the entire tutorial should be applicable to any device running Ubuntu.
 
@@ -65,10 +65,25 @@ stages:
 deploy-prod:
   stage: deploy
   script:
-    - docker build . -t purple-tin
-    - docker run -d -p 3000:3000 --rm --name purple-tin purple-tin
+    # build the from the Dockerfile in current folder . and
+    # give the resulting image a (-t) tag / name
+    - docker build . -t <tag>
+    # run docker container in (-d) detached mode and allow it
+    # to be (-rm) removed when it exits or the Docker daemon exits
+    - docker run -d -p 3000:3000 --rm --name <tag> <running name>
 ```
 
 ## Running the pipeline
 
-Running the pipeline is as simple as simply pushing new code to the repository on GitLab. Our runner will immediately notice and start running our defined pipeline. Upon success you can access your Next app on `http://<raspberrypi IP address>:3000/` within your local network!
+Running the pipeline is as simple as pushing new code to the repository on GitLab. Our runner will immediately notice and start running our defined pipeline. Upon success you can access your Next app on `http://<raspberrypi IP address>:3000/` within your local network!
+
+But the pipeline will now trigger on every push to the repository no matter to which branch. We can fix that by adding the `only` keyword to our `deploy-prod` job, specifying to only run the job on whenever we push to the `main` branch:
+
+```yml
+step-deploy-prod:
+  # ...
+  only:
+    - main
+```
+
+This will allow us to happily keep pushing to feature branches without triggering our deployment. Another useful thing might be to set up a separate `testing` stage with a job that runs our projects test suite and only runs on merge requests: `only: - merge_requests`.
